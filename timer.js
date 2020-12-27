@@ -1,33 +1,37 @@
-// (function () {
-//     const second = 1000,
-//           minute = second * 60,
-//           hour = minute * 60,
-//           day = hour * 24;
-  
-//     let birthday = "Sep 30, 2021 00:00:00",
-//         countDown = new Date(birthday).getTime(),
-//         x = setInterval(function() {    
-  
-//           let now = new Date().getTime(),
-//               distance = countDown - now;
-  
-//           document.getElementById("days").innerText = Math.floor(distance / (day)),
-//             document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-//             document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-//             document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
-  
-//           //do something later when date is reached
-//           if (distance < 0) {
-//             let headline = document.getElementById("headline"),
-//                 countdown = document.getElementById("countdown"),
-//                 content = document.getElementById("content");
-  
-//             headline.innerText = "It's my birthday!";
-//             countdown.style.display = "none";
-//             content.style.display = "block";
-  
-//             clearInterval(x);
-//           }
-//           //seconds
-//         }, 0)
-//     }());
+const refs = {
+  days: document.querySelector('span[data-value="days"]'),
+  hours: document.querySelector('span[data-value="hours"]'),
+  minutes: document.querySelector('span[data-value="mins"]'),
+  seconds: document.querySelector('span[data-value="secs"]'),
+}
+
+const timer = {
+  start(){
+      const startTime = new Date( 2021, 5, 20, );
+    setInterval(() => {
+        const targetTime = new Date();
+        const deltaTime = startTime - targetTime;
+
+        updateClockface(deltaTime);
+    }, 1000);
+  }
+
+}
+timer.start();
+
+function updateClockface(time) {
+    const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
+    const hours = pad(
+      Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    );
+    const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
+    const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
+
+    refs.days.textContent = days;
+    refs.hours.textContent = hours;
+    refs.minutes.textContent = mins;
+    refs.seconds.textContent = secs;
+}
+function pad(value) {
+    return String(value).padStart(2, '0');
+  }
